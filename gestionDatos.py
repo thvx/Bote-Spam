@@ -1,6 +1,5 @@
 import json
 import os
-from datetime import datetime
 
 class GestionDatos:
     @staticmethod
@@ -8,13 +7,10 @@ class GestionDatos:
         with open(datosUsuarioFile, "r") as file:
             datosUsuario = json.load(file)
             if direccionCorreo in datosUsuario:
-                usuario = datosUsuario[direccionCorreo]
-                #print("Datos del usuario:")
-                #print(f"Nombres: {usuario['nombres']}")
-                #print(f"Apellidos: {usuario['apellidos']}")
-                #print(f"Correo electrónico: {direccionCorreo}")
+                return datosUsuario[direccionCorreo]
             else:
                 print("Error: El usuario no existe")
+                return None
 
     @staticmethod
     def existeCuenta(direccionCorreo, listaUsuariosFile):
@@ -29,6 +25,14 @@ class GestionDatos:
     def agregarCuenta(direccionCorreo, listaUsuariosFile):
         with open(listaUsuariosFile, 'a') as file:
             file.write(direccionCorreo + '\n')
+
+    @staticmethod
+    def cargarDatosUsuario(datosUsuarioFile):
+        if os.path.isfile(datosUsuarioFile):
+            with open(datosUsuarioFile, 'r') as archivo:
+                return json.load(archivo)
+        else:
+            return {}
     
     @staticmethod
     def guardarDatos(direccionCorreo, datosUsuario):

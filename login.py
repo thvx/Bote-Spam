@@ -1,5 +1,6 @@
 from conexionGmail import ConexionGmail
 from gestionDatos import GestionDatos
+from configuracionUsuario import ConfiguracionUsuario
 
 CUENTAS_FILE = 'listaUsuarios.txt'
 DATOS_USUARIO_FILE = 'datosUsuario.json'
@@ -11,8 +12,8 @@ class Login:
         self.direccionCorreo = ""
     
     def registrarUsuario(self, direccionCorreo):
-        self.autenticador.permitirAcceso()  
         if not GestionDatos.existeCuenta(direccionCorreo, CUENTAS_FILE):
+            self.autenticador.permitirAcceso()  
             GestionDatos.agregarCuenta(direccionCorreo, CUENTAS_FILE)
             datosUsuario = {
                 "nombres": "",  # Agrega los nombres del usuario
@@ -21,13 +22,40 @@ class Login:
             GestionDatos.guardarDatos(direccionCorreo, datosUsuario)
             print("Cuenta creada exitosamente. Inicie sesión")
         else:
-            print("Error en la creación de la cuenta. Volver a intentarlo")
+            print("La cuenta ya se encuentra registrada. Iniciar sesion")
+
+    @staticmethod
+    def menuUsuario():
+        print("Seleccione una opción:")
+        print("1. Editar datos de usuario")
+        print("2. Sincronizar correo")
+        print("3. Detectar Spam")
+        print("4. Eliminar cuenta")
+        print("5. Volver al menú principal")
     
-    def iniciarSesion(self, direccionCorreo):
-        if GestionDatos.existeCuenta(direccionCorreo, CUENTAS_FILE):
-            # El usuario existe, mostrar el menú de opciones
-            return True
+    def iniciarSesion(self, direccionCorreo, scopes):
+        if GestionDatos.existeCuenta(direccionCorreo, CUENTAS_FILE) and self.autenticador.iniciarSesionGmail(scopes):
+            self.menuUsuario()
+            opcion = int(input("Opcion: "))
+            while opcion > 0 and opcion < 6:
+                if opcion == 1:
+                    ConfiguracionUsuario.modificarDatos(direccionCorreo)
+                elif opcion == 2:
+                    print("Sincronizando correo...")
+                    # Lógica para sincronizar el correo
+                elif opcion == 3:
+                    print("Detectando spam...")
+                    # Lógica para detectar spam
+                elif opcion == 4:
+                    if ConfiguracionUsuario.eliminarCuenta(direccionCorreo):
+                        break
+                    else:
+                        self.menuUsuario()
+                elif opcion == 5:
+                    break
+                else:
+                    print("Opcion invalida. Intente nuevamente.")
+                opcion = int(input("Opcion: "))
         else:
-            # El usuario no está registrado, volver al menú principal
             print("Usuario no registrado.")
             return False
