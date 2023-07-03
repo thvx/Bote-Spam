@@ -2,10 +2,23 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
+from oauth2client import file, client, tools
+from apiclient import discovery
+from apiclient import errors
+from httplib2 import Http
 import os.path
+import re
+import time
+import dateutil.parser as parser
+from datetime import datetime
+import base64
+from bs4 import BeautifulSoup
+import datetime
+import csv
 import webbrowser
 
-TOKEN_FILE = r'G:\Mi unidad\V ciclo\Ingeniería de Requisitos\Bote de spam\token.json'
+TOKEN_FILE = r'\token.json'
+STORAGE_FILE = r'\storage.json'
 
 class ConexionGmail:
     def __init__(self, archivoCredenciales, scopes):

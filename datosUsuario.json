@@ -1,0 +1,19 @@
+{
+    "usuario1@gmail.com": {
+        "nombres": "John",
+        "apellidos": "Doe"
+    },
+    "usuario2@gmail.com": {
+        "nombres": "Jane",
+        "apellidos": "Smith"
+    },
+    "dafna.pena@unmsm.edu.pe": {
+        "nombres": "Dafna Nicole",
+        "apellidos": "Pena",
+        "direccionCorreo": "dafna.pena@unmsm.edu.pe"
+    },
+    "josue.espinoza2@unmsm.edu.pe": {
+        "nombres": "",
+        "apellidos": ""
+    }
+}
