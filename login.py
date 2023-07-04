@@ -41,7 +41,7 @@ class Login:
                 if opcion == 1:
                     ConfiguracionUsuario.modificarDatos(direccionCorreo)
                 elif opcion == 2:
-                    print("Sincronizando correo...")
+                    GestionDatos.obtenerUltimoCorreo()
                     # Lógica para sincronizar el correo
                 elif opcion == 3:
                     print("Detectando spam...")

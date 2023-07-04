@@ -1,6 +1,20 @@
 import json
 import os
-
+from oauth2client import file, client, tools
+from apiclient import discovery
+from apiclient import errors
+from httplib2 import Http
+import os.path
+import re
+import time
+import dateutil.parser as parser
+from datetime import datetime
+import base64
+from bs4 import BeautifulSoup
+import datetime
+import csv
+import webbrowser
+STORAGE_FILE = r'\storage.json'
 class GestionDatos:
     @staticmethod
     def obtenerUsuario(direccionCorreo, datosUsuarioFile):
@@ -49,12 +63,12 @@ class GestionDatos:
             json.dump(datos, file, indent=4)
             file.truncate()
 
-    def obtenerUltimoCorreo(self):
+    def obtenerUltimoCorreo():
         SCOPES = 'https://www.googleapis.com/auth/gmail.modify'
         store = file.Storage(STORAGE_FILE)
         creds = store.get()
         if not creds or creds.invalid:
-            flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
+            flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
             creds = tools.run_flow(flow, store)
         GMAIL = discovery.build('gmail', 'v1', http=creds.authorize(Http()))
 
@@ -110,20 +124,18 @@ class GestionDatos:
                 clean_one = part_data.replace("-", "+")  # decoding from Base64 to UTF-8
                 clean_one = clean_one.replace("_", "/")  # decoding from Base64 to UTF-8
                 clean_two = base64.b64decode(bytes(clean_one, 'UTF-8'))  # decoding from Base64 to UTF-8
-                soup = BeautifulSoup(clean_two, "lxml")
-                mssg_body = soup.body()
+                print(clean_two)
+                clean_three = clean_two.replace(',', '')
                 # mssg_body is a readible form of message body
                 # depending on the end user's requirements, it can be further cleaned
                 # using regex, beautiful soup, or any other method
-                temp_dict['Message_body'] = mssg_body
+                temp_dict['Message_body'] = clean_three
 
             except:
                 pass
 
             final_list.append(temp_dict)  # This will create a dictonary item in the final list
-
-            # This will mark the messagea as read
-            GMAIL.users().messages().modify(userId=user_id, id=m_id, body={'removeLabelIds': ['UNREAD']}).execute()
+            print(final_list[0])
             with open('labeled_emails_español.csv', 'w', encoding='utf-8', newline='') as csvfile:
                 fieldnames = ['email', 'label']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=',')

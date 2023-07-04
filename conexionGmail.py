@@ -18,7 +18,7 @@ import csv
 import webbrowser
 
 TOKEN_FILE = r'\token.json'
-STORAGE_FILE = r'\storage.json'
+
 
 class ConexionGmail:
     def __init__(self, archivoCredenciales, scopes):
