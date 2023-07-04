@@ -98,7 +98,7 @@ class GestionDatos:
             clean_one = part_data.replace("-", "+")  # decoding from Base64 to UTF-8
             clean_one = clean_one.replace("_", "/")  # decoding from Base64 to UTF-8
             clean_two = base64.b64decode(bytes(clean_one, 'UTF-8'))  # decoding from Base64 to UTF-8
-            print(clean_two)
+            return clean_two
 
         except:
             pass

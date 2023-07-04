@@ -1,6 +1,7 @@
 from conexionGmail import ConexionGmail
 from gestionDatos import GestionDatos
 from configuracionUsuario import ConfiguracionUsuario
+from spamML import SpamML
 
 CUENTAS_FILE = 'listaUsuarios.txt'
 DATOS_USUARIO_FILE = 'datosUsuario.json'
@@ -40,10 +41,12 @@ class Login:
                 if opcion == 1:
                     ConfiguracionUsuario.modificarDatos(self, direccionCorreo)
                 elif opcion == 2:
-                    GestionDatos.obtenerUltimoCorreo()
+                    pass
                     # Lógica para sincronizar el correo
                 elif opcion == 3:
-                    print("Detectando spam...")
+                    ultimoCorreo = GestionDatos.obtenerUltimoCorreo()
+                    detectorSpam = SpamML(ultimoCorreo)
+                    detectorSpam.detectarSpam()
                     # Lógica para detectar spam
                 elif opcion == 4:
                     if ConfiguracionUsuario.eliminarCuenta(self, direccionCorreo):
