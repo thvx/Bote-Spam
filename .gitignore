@@ -37,6 +37,7 @@ pip-log.txt
 pip-delete-this-directory.txt
 credentials.json
 token.json
+storage.json
 
 # Unit test / coverage reports
 htmlcov/
