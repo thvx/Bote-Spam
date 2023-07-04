@@ -9,7 +9,6 @@ class Login:
     def __init__(self, archivoCredenciales, scopes):
         self.autenticador = ConexionGmail(archivoCredenciales, scopes)
         self.archivoCredenciales = archivoCredenciales
-        self.direccionCorreo = ""
     
     def registrarUsuario(self, direccionCorreo):
         if not GestionDatos.existeCuenta(direccionCorreo, CUENTAS_FILE):
@@ -31,7 +30,7 @@ class Login:
         print("2. Sincronizar correo")
         print("3. Detectar Spam")
         print("4. Eliminar cuenta")
-        print("5. Volver al menú principal")
+        print("5. Cerrar sesion")
     
     def iniciarSesion(self, direccionCorreo, scopes):
         if GestionDatos.existeCuenta(direccionCorreo, CUENTAS_FILE) and self.autenticador.iniciarSesionGmail(scopes):
@@ -39,7 +38,7 @@ class Login:
             opcion = int(input("Opcion: "))
             while opcion > 0 and opcion < 6:
                 if opcion == 1:
-                    ConfiguracionUsuario.modificarDatos(direccionCorreo)
+                    ConfiguracionUsuario.modificarDatos(self, direccionCorreo)
                 elif opcion == 2:
                     GestionDatos.obtenerUltimoCorreo()
                     # Lógica para sincronizar el correo
@@ -47,11 +46,12 @@ class Login:
                     print("Detectando spam...")
                     # Lógica para detectar spam
                 elif opcion == 4:
-                    if ConfiguracionUsuario.eliminarCuenta(direccionCorreo):
+                    if ConfiguracionUsuario.eliminarCuenta(self, direccionCorreo):
                         break
                     else:
                         self.menuUsuario()
                 elif opcion == 5:
+                    ConexionGmail.cerrarSesion(self)
                     break
                 else:
                     print("Opcion invalida. Intente nuevamente.")
