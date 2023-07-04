@@ -63,12 +63,8 @@ class GestionDatos:
             json.dump(datos, file, indent=4)
             file.truncate()
 
-<<<<<<< HEAD
-    def obtenerUltimoCorreo():
-=======
 
-    def obtenerUltimoCorreo(self):
->>>>>>> 49daf8a22b016b81bdac1f9a6d1e682be6d55440
+    def obtenerUltimoCorreo():
         SCOPES = 'https://www.googleapis.com/auth/gmail.modify'
         store = file.Storage(STORAGE_FILE)
         creds = store.get()
@@ -85,39 +81,10 @@ class GestionDatos:
 
         mssg_list = unread_msgs['messages']
 
-        final_list = []
-
         for mssg in mssg_list:
-            temp_dict = {}
             m_id = mssg['id']
             message = GMAIL.users().messages().get(userId=user_id, id=m_id).execute()
             payld = message['payload']
-            headr = payld['headers']
-
-            for one in headr:
-                if one['name'] == 'Subject':
-                    msg_subject = one['value']
-                    temp_dict['Subject'] = msg_subject
-                else:
-                    pass
-
-            for two in headr:
-                if two['name'] == 'Date':
-                    msg_date = two['value']
-                    date_parse = (parser.parse(msg_date))
-                    m_date = (date_parse.date())
-                    temp_dict['Date'] = str(m_date)
-                else:
-                    pass
-
-            for three in headr:
-                if three['name'] == 'From':
-                    msg_from = three['value']
-                    temp_dict['Sender'] = msg_from
-                else:
-                    pass
-
-            temp_dict['Snippet'] = message['snippet']
 
             try:
 
@@ -129,21 +96,14 @@ class GestionDatos:
                 clean_one = part_data.replace("-", "+")  # decoding from Base64 to UTF-8
                 clean_one = clean_one.replace("_", "/")  # decoding from Base64 to UTF-8
                 clean_two = base64.b64decode(bytes(clean_one, 'UTF-8'))  # decoding from Base64 to UTF-8
-                print(clean_two)
                 clean_three = clean_two.replace(',', '')
-                # mssg_body is a readible form of message body
-                # depending on the end user's requirements, it can be further cleaned
-                # using regex, beautiful soup, or any other method
-                temp_dict['Message_body'] = clean_three
-
+                print(clean_three)
             except:
                 pass
 
-            final_list.append(temp_dict)  # This will create a dictonary item in the final list
-            print(final_list[0])
-            with open('labeled_emails_español.csv', 'w', encoding='utf-8', newline='') as csvfile:
-                fieldnames = ['email', 'label']
-                writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=',')
-                writer.writeheader()
-                writer.writerow(final_list['Message_body'])
-                writer.writerow('ham')
+            #with open('labeled_emails_español.csv', 'w', encoding='utf-8', newline='') as csvfile:
+            #    fieldnames = ['email', 'label']
+            #    writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=',')
+            #    writer.writeheader()
+            #    writer.writerow(final_list['Message_body'])
+            #    writer.writerow('ham')

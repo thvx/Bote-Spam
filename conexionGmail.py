@@ -4,13 +4,12 @@ from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 import os
 
-<<<<<<< HEAD
+
 TOKEN_FILE = r'\token.json'
 
-=======
+
 TOKEN_FILE = r'token.json'
 STORAGE_FILE = r'\storage.json'
->>>>>>> 49daf8a22b016b81bdac1f9a6d1e682be6d55440
 
 class ConexionGmail:
     def __init__(self, archivoCredenciales, scopes):
