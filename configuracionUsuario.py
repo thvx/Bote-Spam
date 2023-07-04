@@ -1,13 +1,13 @@
 import os
 import json
 from gestionDatos import GestionDatos
+from conexionGmail import ConexionGmail
 
 CUENTAS_FILE = "listaUsuarios.txt"
 DATOS_USUARIO_FILE = "datosUsuario.json"
 
 class ConfiguracionUsuario:
-    @staticmethod
-    def modificarDatos(direccionCorreo):
+    def modificarDatos(self, direccionCorreo):
         usuario = GestionDatos.obtenerUsuario(direccionCorreo, DATOS_USUARIO_FILE)
         if usuario:
             # Obtener los datos actuales del usuario
@@ -40,26 +40,30 @@ class ConfiguracionUsuario:
         else:
             print("Debe iniciar sesión primero")
 
-    @staticmethod
-    def eliminarCuenta(direccionCorreo):
-        usuario = GestionDatos.existeCuenta(direccionCorreo, CUENTAS_FILE)
-        if usuario:
-            confirmacion = input("¿Está seguro de que desea eliminar su cuenta? (S/N): ")
-            if confirmacion.upper() == "S":
-                direccionConfirmacion = input("Ingrese su correo electrónico para confirmar la eliminación de la cuenta: ")
-                if direccionConfirmacion == direccionCorreo:
-                    datosUsuario = GestionDatos.cargarDatosUsuario(DATOS_USUARIO_FILE)
+    def eliminarCuenta(self, direccionCorreo):
+        confirmacion = input("¿Está seguro de que desea eliminar su cuenta? (S/N): ")
+        if confirmacion.upper() == "S":
+            direccionConfirmacion = input("Ingrese su correo electrónico para confirmar la eliminación de la cuenta: ")
+            if direccionConfirmacion == direccionCorreo:
+                datosUsuario = GestionDatos.cargarDatosUsuario(DATOS_USUARIO_FILE)
+                
+                if direccionCorreo in datosUsuario: #Borrado de datos
                     del datosUsuario[direccionCorreo]
                     with open(DATOS_USUARIO_FILE, 'w') as archivo:
                         json.dump(datosUsuario, archivo, indent=4)
+
+                with open(CUENTAS_FILE, 'r') as archivo: #Borrado de registro
+                    lineas = archivo.readlines()
+                with open(CUENTAS_FILE, 'w') as archivo:
+                    for linea in lineas:
+                        if direccionCorreo not in linea:
+                            archivo.write(linea)
                     print("Cuenta eliminada correctamente.")
+                    ConexionGmail.cerrarSesion(self)
                     return True
-                else:
-                    print("Correo electrónico incorrecto. Cancelando la eliminación de la cuenta.")
-                    return False
             else:
-                print("Cancelando la eliminación de la cuenta.")
+                print("Correo electrónico incorrecto. Cancelando la eliminación de la cuenta.")
                 return False
         else:
-            print("Debe iniciar sesión primero")
-            return False
+            print("Cancelando la eliminación de la cuenta.")
+        return False

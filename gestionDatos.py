@@ -49,6 +49,7 @@ class GestionDatos:
             json.dump(datos, file, indent=4)
             file.truncate()
 
+
     def obtenerUltimoCorreo(self):
         SCOPES = 'https://www.googleapis.com/auth/gmail.modify'
         store = file.Storage(STORAGE_FILE)

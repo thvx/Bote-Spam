@@ -14,7 +14,6 @@ def ejecutar():
     login = Login(archivoCredenciales, scopes)
 
     opcionPrincipal = 0
-    opcionUsuario = 0
 
     while opcionPrincipal != 3:
         menuPrincipal()
