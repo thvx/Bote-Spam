@@ -1,5 +1,5 @@
 import json
-import os
+import os.path
 import string
 
 from oauth2client import file, client, tools
@@ -69,7 +69,7 @@ class GestionDatos:
 
     def obtenerUltimoCorreo():
         SCOPES = 'https://www.googleapis.com/auth/gmail.modify'
-        store = file.Storage(STORAGE_FILE)
+        store = file.Storage(os.path.join(os.getcwd(), 'storage.json'))
         creds = store.get()
         if not creds or creds.invalid:
             flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
