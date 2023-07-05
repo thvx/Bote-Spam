@@ -1,5 +1,4 @@
 import sys
-
 from conexionGmail import ConexionGmail
 from gestionDatos import GestionDatos
 from configuracionUsuario import ConfiguracionUsuario
@@ -63,6 +62,7 @@ class Login:
                     break
                 else:
                     print("Opcion invalida. Intente nuevamente.")
+                self.menuUsuario()
                 opcion = int(input("Opcion: "))
         else:
             print("Usuario no registrado.")
