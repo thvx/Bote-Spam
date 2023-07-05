@@ -1,3 +1,5 @@
+import sys
+
 from conexionGmail import ConexionGmail
 from gestionDatos import GestionDatos
 from configuracionUsuario import ConfiguracionUsuario
@@ -28,12 +30,13 @@ class Login:
     def menuUsuario():
         print("Seleccione una opción:")
         print("1. Editar datos de usuario")
-        print("2. Sincronizar correo")
+        print("2. Configurar spam")
         print("3. Detectar Spam")
         print("4. Eliminar cuenta")
         print("5. Cerrar sesion")
     
     def iniciarSesion(self, direccionCorreo, scopes):
+        detectorSpam = SpamML()
         if GestionDatos.existeCuenta(direccionCorreo, CUENTAS_FILE) and self.autenticador.iniciarSesionGmail(scopes):
             self.menuUsuario()
             opcion = int(input("Opcion: "))
@@ -41,13 +44,15 @@ class Login:
                 if opcion == 1:
                     ConfiguracionUsuario.modificarDatos(self, direccionCorreo)
                 elif opcion == 2:
-                    pass
-                    # Lógica para sincronizar el correo
+                    cv, NB = detectorSpam.configuracionSpam()
                 elif opcion == 3:
                     ultimoCorreo = GestionDatos.obtenerUltimoCorreo()
-                    detectorSpam = SpamML(ultimoCorreo)
+                    encoding = sys.getdefaultencoding()
+                    ultimoCorreo = ultimoCorreo.decode(encoding)
+                    print("El correo es: \n \n" + ultimoCorreo)
+                    detectorSpam.getTexto(ultimoCorreo)
+                    detectorSpam.getConfig(cv, NB)
                     detectorSpam.detectarSpam()
-                    # Lógica para detectar spam
                 elif opcion == 4:
                     if ConfiguracionUsuario.eliminarCuenta(self, direccionCorreo):
                         break
