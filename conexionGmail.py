@@ -4,7 +4,6 @@ from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 import os
 
-
 TOKEN_FILE = r'\token.json'
 
 
@@ -53,17 +52,6 @@ class ConexionGmail:
             # We get a dictonary. Now reading values for the key 'messages'
             mssg_list = unread_msgs['messages']
             print ("Total unread messages in inbox: ", str(len(mssg_list)))
-
-            labels = service.users().labels().list(userId=user_id).execute()
-            labels_list = labels.get('labels', [])
-
-            if not labels_list:
-                print("No se encontraron carpetas.")
-            else:
-                print("Carpetas:")
-                for label in labels_list:
-                    print(label['name'])
-
             return True
         except Exception as e:
             print("Error al iniciar sesión:", str(e))
@@ -72,6 +60,16 @@ class ConexionGmail:
     def obtenerUsuario(self, service):
         user_info = service.users().getProfile(userId='me').execute()
         return user_info
+    
+    def parse_name(self, profile):
+        name = profile['emailAddress']
+        if 'name' in profile:
+            name = self.decode_header(profile['name'])
+        return name
+    
+    def decode_header(self, header):
+        decoded = base64.urlsafe_b64decode(header['value'])
+        return decoded.decode('utf-8')
     
     def cerrarSesion(self):
         if os.path.exists(TOKEN_FILE):
