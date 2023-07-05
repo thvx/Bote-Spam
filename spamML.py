@@ -16,8 +16,6 @@ def limpiar_texto(texto):
   return palabras_procesadas
 
 class SpamML:
-    def __init__(self):
-        self.df = pd.read_csv('labeled_emails_español.csv')
 
     def configuracionSpam(self):
         print("Entrenando modelo...")
