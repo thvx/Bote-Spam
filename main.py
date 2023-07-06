@@ -1,8 +1,7 @@
-from login import Login
-from configuracionUsuario import ConfiguracionUsuario
+from gestionUsuarios.login import Login
 
 scopes = ['https://www.googleapis.com/auth/gmail.readonly']
-archivoCredenciales = 'credentials.json'
+archivoCredenciales = r'credencialesAcceso\credentials.json'
 
 def menuPrincipal():
     print("Seleccione una opción:")
@@ -18,7 +17,6 @@ def ejecutar():
     while opcionPrincipal != 3:
         menuPrincipal()
         opcionPrincipal = int(input("Opcion: "))
-
         if opcionPrincipal == 1:
             direccionCorreo = input("Ingrese su direccion de correo: ")
             login.registrarUsuario(direccionCorreo)

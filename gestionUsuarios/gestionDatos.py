@@ -1,22 +1,13 @@
 import json
 import os.path
-import string
-
 from oauth2client import file, client, tools
 from apiclient import discovery
-from apiclient import errors
 from httplib2 import Http
 import os.path
-import re
-import time
-import dateutil.parser as parser
-from datetime import datetime
 import base64
-from bs4 import BeautifulSoup
-import datetime
-import csv
-import webbrowser
-STORAGE_FILE = r'\storage.json'
+
+STORAGE_FILE = r'credencialesAcceso\storage.json'
+CREDENCIALES = r'credencialesAcceso\credentials.json'
 class GestionDatos:
     @staticmethod
     def obtenerUsuario(direccionCorreo, datosUsuarioFile):
@@ -65,14 +56,12 @@ class GestionDatos:
             json.dump(datos, file, indent=4)
             file.truncate()
 
-
-
     def obtenerUltimoCorreo():
         SCOPES = 'https://www.googleapis.com/auth/gmail.modify'
-        store = file.Storage(os.path.join(os.getcwd(), 'storage.json'))
+        store = file.Storage(os.path.join(os.getcwd(), STORAGE_FILE))
         creds = store.get()
         if not creds or creds.invalid:
-            flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
+            flow = client.flow_from_clientsecrets(CREDENCIALES, SCOPES)
             creds = tools.run_flow(flow, store)
         GMAIL = discovery.build('gmail', 'v1', http=creds.authorize(Http()))
 

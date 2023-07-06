@@ -7,6 +7,7 @@ from stop_words import get_stop_words
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 
+DATASET = r'modeloML\labeled_emails_español.csv'
 def limpiar_texto(texto):
   if pd.isnull(texto):
     return []
@@ -16,11 +17,10 @@ def limpiar_texto(texto):
   return palabras_procesadas
 
 class SpamML:
-
     def configuracionSpam(self):
         print("Entrenando modelo...")
         nltk.download('stopwords')
-        self.df = pd.read_csv('labeled_emails_español.csv')
+        self.df = pd.read_csv(DATASET)
         self.df.drop_duplicates(inplace=True)
         self.df.dropna(how='any', inplace=True, axis=0)
         self.df['email'].head().apply(limpiar_texto)

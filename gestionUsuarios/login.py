@@ -1,11 +1,12 @@
 import sys
-from conexionGmail import ConexionGmail
-from gestionDatos import GestionDatos
-from configuracionUsuario import ConfiguracionUsuario
-from spamML import SpamML
+from gestionUsuarios.conexionGmail import ConexionGmail
+from gestionUsuarios.gestionDatos import GestionDatos
+from gestionUsuarios.configuracionUsuario import ConfiguracionUsuario
+from modeloML.spamML import SpamML
+from modeloML.listas import menuListas
 
-CUENTAS_FILE = 'listaUsuarios.txt'
-DATOS_USUARIO_FILE = 'datosUsuario.json'
+CUENTAS_FILE = r'gestionUsuarios\listaUsuarios.txt'
+DATOS_USUARIO_FILE = r'gestionUsuarios\datosUsuario.json'
 
 class Login:
     def __init__(self, archivoCredenciales, scopes):
@@ -31,8 +32,9 @@ class Login:
         print("1. Editar datos de usuario")
         print("2. Configurar spam")
         print("3. Detectar Spam")
-        print("4. Eliminar cuenta")
-        print("5. Cerrar sesion")
+        print("4. Realizar acciones sobre el spam")
+        print("5. Eliminar cuenta")
+        print("6. Cerrar sesion")
     
     def iniciarSesion(self, direccionCorreo, scopes):
         detectorSpam = SpamML()
@@ -52,12 +54,14 @@ class Login:
                     detectorSpam.getTexto(ultimoCorreo)
                     detectorSpam.getConfig(cv, NB)
                     detectorSpam.detectarSpam()
-                elif opcion == 4:
+                elif opcion ==4:
+                    menuListas()
+                elif opcion == 5:
                     if ConfiguracionUsuario.eliminarCuenta(self, direccionCorreo):
                         break
                     else:
                         self.menuUsuario()
-                elif opcion == 5:
+                elif opcion == 6:
                     ConexionGmail.cerrarSesion(self)
                     break
                 else:

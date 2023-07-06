@@ -1,8 +1,8 @@
-
 import pandas as pd
+from spamML import limpiar_texto
 
+DATASET = r'modeloML\labeled_emails_español.csv'
 class SpamML:
-
     def getTexto(self, texto):
         self.texto = texto
     def detectarSpam(self):
@@ -14,5 +14,5 @@ class SpamML:
         df1 = pd.DataFrame({'email': [self.texto], 'label': [resultado]})
         self.df = pd.concat([df1, self.df])
         self.df.head(1)
-        self.df.to_csv('labeled_emails_español.csv')
-        self.df.to_csv('labeled_emails_español.csv', encoding='utf-8')
+        self.df.to_csv(DATASET)
+        self.df.to_csv(DATASET, encoding='utf-8')
