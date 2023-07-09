@@ -4,6 +4,7 @@ from gestionUsuarios.gestionDatos import GestionDatos
 from gestionUsuarios.configuracionUsuario import ConfiguracionUsuario
 from modeloML.spamML import SpamML
 from modeloML.listas import menuListas
+from BBDD.listasBBDD import ListaBBDD
 
 CUENTAS_FILE = r'gestionUsuarios\listaUsuarios.txt'
 DATOS_USUARIO_FILE = r'gestionUsuarios\datosUsuario.json'
@@ -56,11 +57,19 @@ class Login:
                         ultimoCorreo = ultimoCorreo.decode(encoding)
                         print("El correo es: \n \n" + ultimoCorreo)
                         detectorSpam.getTexto(ultimoCorreo)
-                        detectorSpam.detectarSpam()
+                        resultado = detectorSpam.detectarSpam()
                         if resultado == "spam":
                             elc = input("¿Desea guardar la dirección de correo detectada como spam?\ns: si\n n:no")
                             if elc == s:
-                                print("Redirigir a listas BBDD")
+                                correoSpam = input("Ingrese la dirección de correo spam: ")
+                                gestionLista = ListaBBDD(correoSpam)
+                                if gestionLista.existeCorreo():
+                                    gestionLista.actualizarReincidencia()
+                                    reincidencias = gestionLista.hallarReincidencias()
+                                    if reincidencias >=5:
+                                        print("El correo electrónico supera las 5 reincidencias. Se recomienda bloquearlo ante tantos envíos de correo spam.")
+                                elif:
+                                    gestionLista.agregarCorreo()
                             elif:
                                 print("Gracias por utilizar Bote-Spam\n")
                     else:

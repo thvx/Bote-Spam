@@ -38,7 +38,7 @@ class SpamML:
         cv = CountVectorizer(analyzer=limpiar_texto)
         X_valid = cv.transform(self.email["email"])
         resultado = NB.predict(X_valid)
-        print(f"El email es: {resultado}")
+        print(f"El email es: {resultado[0]}")
         df1 = pd.DataFrame({'email': [self.texto], 'label': [resultado]})
         self.df = pd.concat([df1, self.df])
         # self.df.to_csv(DATASET) // PARA EXPORTAR EL .CSV
