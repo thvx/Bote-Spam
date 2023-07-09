@@ -15,4 +15,3 @@ class SpamML:
         self.df = pd.concat([df1, self.df])
         self.df.head(1)
         self.df.to_csv(DATASET)
-        self.df.to_csv(DATASET, encoding='utf-8')

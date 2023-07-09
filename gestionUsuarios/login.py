@@ -45,15 +45,26 @@ class Login:
                 if opcion == 1:
                     ConfiguracionUsuario.modificarDatos(self, direccionCorreo)
                 elif opcion == 2:
-                    cv, NB = detectorSpam.configuracionSpam()
+                    try:
+                        detectorSpam.configuracionSpam()
+                    except:
+                        print("Ocurrió un error... \n\n")
                 elif opcion == 3:
                     ultimoCorreo = GestionDatos.obtenerUltimoCorreo()
-                    encoding = sys.getdefaultencoding()
-                    ultimoCorreo = ultimoCorreo.decode(encoding)
-                    print("El correo es: \n \n" + ultimoCorreo)
-                    detectorSpam.getTexto(ultimoCorreo)
-                    detectorSpam.getConfig(cv, NB)
-                    detectorSpam.detectarSpam()
+                    if type(ultimoCorreo) != type(None):
+                        encoding = sys.getdefaultencoding()
+                        ultimoCorreo = ultimoCorreo.decode(encoding)
+                        print("El correo es: \n \n" + ultimoCorreo)
+                        detectorSpam.getTexto(ultimoCorreo)
+                        detectorSpam.detectarSpam()
+                        if resultado == "spam":
+                            elc = input("¿Desea guardar la dirección de correo detectada como spam?\ns: si\n n:no")
+                            if elc == s:
+                                print("Redirigir a listas BBDD")
+                            elif:
+                                print("Gracias por utilizar Bote-Spam\n")
+                    else:
+                        print("No se ha podido detectar un correo de manera correcta")
                 elif opcion ==4:
                     menuListas()
                 elif opcion == 5:
