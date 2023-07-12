@@ -4,7 +4,6 @@ import string
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
-from joblib import dump, load
 
 DATASET = r'modeloML\labeled_emails_español.csv'
 def limpiar_texto(texto):
@@ -27,19 +26,19 @@ class SpamML:
         X_train = cv.fit_transform(self.df['email'])
         NB = MultinomialNB().fit(X_train, self.df['label'])
         print("¡Modelo entrenado exitosamente!\n\n")
-        dump(NB, 'modelo_entrenado.joblib')
-
+        return cv, NB
+    def getConfig(self,cv,NB):
+        self.cv = cv
+        self.NB = NB
     def getTexto(self, texto):
         self.texto = texto
     def detectarSpam(self):
-        NB = load('modelo_entrenado.joblib')
         self.email = pd.DataFrame({'email': [self.texto], 'label': ["nn"]})
         self.email['email'].head().apply(limpiar_texto)
-        cv = CountVectorizer(analyzer=limpiar_texto)
-        X_valid = cv.transform(self.email["email"])
-        resultado = NB.predict(X_valid)
+        X_valid = self.cv.transform(self.email["email"])
+        resultado = self.NB.predict(X_valid)
         print(f"El email es: {resultado[0]}")
         df1 = pd.DataFrame({'email': [self.texto], 'label': [resultado]})
         self.df = pd.concat([df1, self.df])
-        # self.df.to_csv(DATASET) // PARA EXPORTAR EL .CSV
+        self.df.to_csv(DATASET)
         return resultado[0]

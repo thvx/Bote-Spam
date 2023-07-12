@@ -47,11 +47,12 @@ class Login:
                     ConfiguracionUsuario.modificarDatos(self, direccionCorreo)
                 elif opcion == 2:
                     try:
-                        detectorSpam.configuracionSpam()
+                        cv, NB = detectorSpam.configuracionSpam()
                     except:
                         print("Ocurrió un error... \n\n")
                 elif opcion == 3:
                     ultimoCorreo = GestionDatos.obtenerUltimoCorreo()
+                    detectorSpam.getConfig(cv, NB)
                     if type(ultimoCorreo) != type(None):
                         encoding = sys.getdefaultencoding()
                         ultimoCorreo = ultimoCorreo.decode(encoding)
@@ -59,18 +60,18 @@ class Login:
                         detectorSpam.getTexto(ultimoCorreo)
                         resultado = detectorSpam.detectarSpam()
                         if resultado == "spam":
-                            elc = input("¿Desea guardar la dirección de correo detectada como spam?\ns: si\n n:no")
-                            if elc == s:
-                                correoSpam = input("Ingrese la dirección de correo spam: ")
+                            elc = input("¿Desea guardar la dirección de correo detectada como spam?\ns: si\nn:no\n")
+                            if elc == 's':
+                                correoSpam = input("Ingrese el nombre de usuario del spammer: ")
                                 gestionLista = ListaBBDD(correoSpam)
                                 if gestionLista.existeCorreo():
                                     gestionLista.actualizarReincidencia()
                                     reincidencias = gestionLista.hallarReincidencias()
-                                    if reincidencias >=5:
+                                    if reincidencias > 5:
                                         print("El correo electrónico supera las 5 reincidencias. Se recomienda bloquearlo ante tantos envíos de correo spam.")
-                                elif:
+                                else:
                                     gestionLista.agregarCorreo()
-                            elif:
+                            else:
                                 print("Gracias por utilizar Bote-Spam\n")
                     else:
                         print("No se ha podido detectar un correo de manera correcta")
