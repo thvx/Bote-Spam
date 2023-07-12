@@ -60,7 +60,7 @@ class Login:
                         if resultado == "spam":
                             elc = input("¿Desea guardar la dirección de correo detectada como spam?\ns: si\nn:no\n")
                             if elc == 's':
-                                correoSpam = input("Ingrese la dirección de correo spam: ")
+                                correoSpam = input("Ingrese el nombre de usuario de la dirección de correo spam: ")
                                 gestionLista = ListaBBDD(correoSpam)
                                 if gestionLista.existeCorreo():
                                     gestionLista.actualizarReincidencia()
