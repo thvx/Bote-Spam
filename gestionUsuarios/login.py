@@ -60,7 +60,7 @@ class Login:
                         resultado = detectorSpam.detectarSpam()
                         if resultado == "spam":
                             elc = input("¿Desea guardar la dirección de correo detectada como spam?\ns: si\n n:no")
-                            if elc == s:
+                            if elc == 's':
                                 correoSpam = input("Ingrese la dirección de correo spam: ")
                                 gestionLista = ListaBBDD(correoSpam)
                                 if gestionLista.existeCorreo():
@@ -68,9 +68,9 @@ class Login:
                                     reincidencias = gestionLista.hallarReincidencias()
                                     if reincidencias >=5:
                                         print("El correo electrónico supera las 5 reincidencias. Se recomienda bloquearlo ante tantos envíos de correo spam.")
-                                elif:
+                                else:
                                     gestionLista.agregarCorreo()
-                            elif:
+                            else:
                                 print("Gracias por utilizar Bote-Spam\n")
                     else:
                         print("No se ha podido detectar un correo de manera correcta")
