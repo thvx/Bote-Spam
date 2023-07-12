@@ -58,9 +58,9 @@ class Login:
                         detectorSpam.getTexto(ultimoCorreo)
                         resultado = detectorSpam.detectarSpam()
                         if resultado == "spam":
-                            elc = input("¿Desea guardar la dirección de correo detectada como spam?\ns: si\nn:no\n")
+                            elc = input("¿Desea guardar la dirección de correo detectada como spam?\ns: si\n n:no")
                             if elc == 's':
-                                correoSpam = input("Ingrese el nombre de usuario del spammer: ")
+                                correoSpam = input("Ingrese la dirección de correo spam: ")
                                 gestionLista = ListaBBDD(correoSpam)
                                 if gestionLista.existeCorreo():
                                     gestionLista.actualizarReincidencia()
